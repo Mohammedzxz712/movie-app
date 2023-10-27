@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../view_movie/view_movie.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -14,11 +16,16 @@ class HomeScreen extends StatelessWidget {
               height: 289,
               child: Stack(
                 children: [
-                  Image(
-                    image: AssetImage("assets/images/mainFilm.png"),
-                    //fit: BoxFit.cover,
-                    height: 217,
-                    width: double.infinity,
+                  InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context,  ViewMovie.routeName);
+                    },
+                    child: Image(
+                      image: AssetImage("assets/images/mainFilm.png"),
+                      //fit: BoxFit.cover,
+                      height: 217,
+                      width: double.infinity,
+                    ),
                   ),
                   Row(
                     children: [
