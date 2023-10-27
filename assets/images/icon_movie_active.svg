@@ -1,0 +1,9 @@
+<svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Icon material-movie" d="M21.5889 0.923035L24.2015 6.23558H20.2826L17.67 0.923035H15.0575L17.67 6.23558H13.7512L11.1386 0.923035H8.52599L11.1386 6.23558H7.2197L4.60711 0.923035H3.30082C1.8639 0.923035 0.701295 2.11836 0.701295 3.57931L0.688232 19.5169C0.688232 20.9779 1.8639 22.1732 3.30082 22.1732H24.2015C25.6384 22.1732 26.8141 20.9779 26.8141 19.5169V0.923035H21.5889Z" fill="url(#paint0_linear_2_632)"/>
+<defs>
+<linearGradient id="paint0_linear_2_632" x1="7.2197" y1="6.23558" x2="7.2197" y2="6.23558" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFBB3B"/>
+<stop offset="1" stop-color="#FFA90A"/>
+</linearGradient>
+</defs>
+</svg>

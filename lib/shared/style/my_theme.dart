@@ -9,8 +9,18 @@ class MyTheme {
       backgroundColor: Colors.black,
       selectedItemColor: Color(0xffFFBB3B),
       unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
+      selectedLabelStyle: TextStyle(
+          color: Color(0xFFB5B4B4),
+          fontSize: 10,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w400,
+          height: 2),
+      unselectedLabelStyle: TextStyle(
+          color: Color(0xFFB5B4B4),
+          fontSize: 10,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w400,
+          height: 2),
     ),
     // textTheme: TextTheme(
     //   bodyLarge: GoogleFonts.elMessiri(

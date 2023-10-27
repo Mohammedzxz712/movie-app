@@ -11,7 +11,10 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LayoutCubit(),
+      create: (context) => LayoutCubit()
+        ..getHomeData()
+        ..getReleaseData()
+        ..getRecommendData(),
       child: BlocConsumer<LayoutCubit, LayoutStates>(
         listener: (context, state) {},
         builder: (context, state) {

@@ -1,7 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../shared/components/components.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -16,6 +15,7 @@ class SearchScreen extends StatelessWidget {
       child: BlocConsumer<SearchCubit, SearchStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          var cubit = SearchCubit.get(context);
           return SafeArea(
             child: Scaffold(
                 body: Padding(
@@ -33,6 +33,14 @@ class SearchScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        onFieldSubmitted: (value) {
+                          if (formKey.currentState!.validate()) {
+                            SearchCubit.get(context)
+                                .searchData(searchController.text);
+                          }
+                        },
+                        // onChanged: (value) => SearchCubit.get(context)
+                        //     .searchData(searchController.text),
                         controller: searchController,
                         decoration: const InputDecoration(
                           filled: true,
@@ -56,71 +64,77 @@ class SearchScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    // if (SearchCubit.get(context).searchModel != null)
-                    Expanded(
-                      child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => Container(
-                                height: 120,
-                                child: Row(
-                                  children: [
-                                    Image(
-                                      image: NetworkImage(
-                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNf8BJrOYOERBM0mYzBsj7rVR9fRXZwhNC8Q&usqp=CAU}'),
-                                      // fit: BoxFit.cover,
-                                      width: 120,
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              'lita Battle Angel',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                  height: 1.3,
-                                                  color: Colors.white),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              '2019',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12,
+                    if (cubit.searchModel != null)
+                      Expanded(
+                        child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) => Container(
+                                  height: 120,
+                                  child: Row(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl:
+                                            "https://image.tmdb.org/t/p/w500${cubit.searchModel?.results?[index].backdropPath}",
+                                        fit: BoxFit.cover,
+                                        width: 120,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator(
+                                          color: Colors.yellow,
+                                        )),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 10,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            // if (model.oldPrice != 0 &&
-                                            //     isDiscount == true)
-                                            Text(
-                                              'Rosa Salazar, Christoph Waltz',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
+                                              Text(
+                                                "${cubit.searchModel?.results?[index].title}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    height: 1.3,
+                                                    color: Colors.white),
                                               ),
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                "${cubit.searchModel?.results?[index].releaseDate?.substring(0, 4)}",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                "${cubit.searchModel?.results?[index].originalTitle}",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                          separatorBuilder: (context, index) => Divider(),
-                          itemCount: 10),
-                    ),
+                            separatorBuilder: (context, index) => Divider(),
+                            itemCount: 10),
+                      ),
                   ],
                 ),
               ),

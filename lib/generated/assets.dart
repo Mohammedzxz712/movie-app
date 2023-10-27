@@ -3,8 +3,19 @@ class Assets {
   Assets._();
 
   static const String imagesFilm1 = 'assets/images/film_1.png';
+  static const String imagesHomeIcon = 'assets/images/home_icon.png';
+  static const String imagesHomeIconActive =
+      'assets/images/home_icon_active.png';
+  static const String imagesIconBookmarks = 'assets/images/Icon_bookmarks.svg';
+  static const String imagesIconBookmarksActive =
+      'assets/images/Icon_bookmarks_active.svg';
+  static const String imagesIconMovie = 'assets/images/icon_movie.svg';
+  static const String imagesIconMovieActive =
+      'assets/images/icon_movie_active.svg';
   static const String imagesIconPlay = 'assets/images/iconPlay.png';
   static const String imagesMainFilm = 'assets/images/mainFilm.png';
   static const String imagesRImage = 'assets/images/rImage.png';
   static const String imagesRecom1 = 'assets/images/recom_1.png';
+  static const String imagesSearch = 'assets/images/search.png';
+  static const String imagesSearchActive = 'assets/images/search_active.png';
 }
