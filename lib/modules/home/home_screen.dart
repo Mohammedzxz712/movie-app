@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/layout/cubit/cubit.dart';
 import 'package:movie_app/layout/cubit/states.dart';
 import 'package:movie_app/models/navigate_model.dart';
@@ -23,94 +24,108 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    height: 289,
+                    height: 313.h,
                     child: Stack(
                       children: [
                         Image(
                           image: NetworkImage(
                               "https://image.tmdb.org/t/p/w500${cubit.homeModel?.results[0].backdropPath}"),
-                          //fit: BoxFit.cover,
+                          fit: BoxFit.cover,
                           height: 217,
                           width: double.infinity,
                         ),
-                        Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                        Positioned(
+                          top: 90.h,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 21.w, right: 26.w),
                                 child: Stack(
                                   children: [
-                                    Image(
-                                      image: NetworkImage(
-                                          "https://image.tmdb.org/t/p/w500${cubit.homeModel?.results[0].posterPath}"),
-                                      //fit: BoxFit.cover,
-                                      height: 199,
-                                      width: 129,
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: Image(
+                                        image: NetworkImage(
+                                            "https://image.tmdb.org/t/p/w500${cubit.homeModel?.results[0].posterPath}"),
+                                        //fit: BoxFit.cover,
+                                        height: 199.h,
+                                        width: 129.w,
+                                      ),
                                     ),
-                                    Container(
-                                      height: 24,
-                                      color: Colors.grey,
-                                      width: 23,
-                                      child: Icon(Icons.add),
+                                    Positioned(
+                                      top: -5.h,
+                                      left: -8.w,
+                                      child: Icon(
+                                        Icons.bookmark,
+                                        color: Color(0xff514F4F),
+                                        size: 38.h,
+
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 20.h,
                                     )
                                   ],
                                 ),
                               ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Image(
-                                  image:
-                                      AssetImage("assets/images/iconPlay.png"),
-                                  //fit: BoxFit.cover,
-                                  height: 100,
-                                ),
-                                Text(
-                                  "${cubit.homeModel?.results[0].title}",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.white),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                  "${cubit.homeModel?.results[0].releaseDate}",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                ),
-                              ],
-                            )
-                          ],
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                        "assets/images/iconPlay.png"),
+                                    //fit: BoxFit.cover,
+                                    height: 60.h,
+                                    width: 60.w,
+                                  ),
+                                  SizedBox(
+                                    height: 92.h,
+                                  ),
+                                  Text(
+                                    "${cubit.homeModel?.results[0].title}",
+                                    style: TextStyle(
+                                        fontSize: 14.sp, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    "${cubit.homeModel?.results[0].releaseDate}",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.grey),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+
                   Container(
-                    height: 187,
+                    height: 187.h,
                     width: double.infinity,
-                    color: Color(0xff282A28),
+                    color: Color(0xFF282A28),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.only(left: 25.w, top: 15.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'New Release',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 13.h,
                           ),
                           Expanded(
                             child: ListView.separated(
@@ -129,24 +144,37 @@ class HomeScreen extends StatelessWidget {
                                       },
                                       child: Stack(
                                         children: [
-                                          Image(
-                                            image: NetworkImage(
-                                                "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}"),
-                                            fit: BoxFit.cover,
-                                            height: 127.74,
-                                            width: 96.87,
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            child: Image(
+                                              image: NetworkImage(
+                                                  "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}"),
+                                              fit: BoxFit.cover,
+                                              height: 127.74.h,
+                                              width: 96.87.w,
+                                            ),
                                           ),
-                                          Container(
-                                            height: 24,
-                                            color: Colors.grey,
-                                            width: 22,
-                                            child: Icon(Icons.add),
+                                          Positioned(
+                                            top: -5.h,
+                                            left: -8.w,
+
+                                            child: Icon(
+                                              Icons.bookmark,
+                                              color: Color(0xff514F4F),
+                                              size: 38.h,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: 20.h,
                                           )
                                         ],
                                       ),
                                     ),
                                 separatorBuilder: (context, index) => SizedBox(
-                                      width: 10,
+                                      width: 14.w,
                                     ),
                                 itemCount: 10),
                           )
@@ -155,14 +183,14 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 30.h,
                   ),
                   Container(
-                    height: 246,
+                    height: 255.h,
                     width: double.infinity,
                     color: Color(0xff282A28),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.only(left: 21.w, top: 10.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -170,13 +198,16 @@ class HomeScreen extends StatelessWidget {
                             'Recomended',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 14.h,
                           ),
                           Expanded(
                             child: ListView.separated(
+                              padding: EdgeInsets.zero,
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) => InkWell(
@@ -196,60 +227,114 @@ class HomeScreen extends StatelessWidget {
                                         children: [
                                           Stack(
                                             children: [
-                                              Image(
-                                                image: NetworkImage(
-                                                    "https://image.tmdb.org/t/p/w500${cubit.recommendedModel?.results?[index].backdropPath}"),
-                                                fit: BoxFit.cover,
-                                                height: 127.74,
-                                                width: 96.87,
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(4),
+                                                  topRight: Radius.circular(4),
+                                                ),
+                                                child: Image(
+                                                  image: NetworkImage(
+                                                      "https://image.tmdb.org/t/p/w500${cubit.recommendedModel?.results?[index].backdropPath}"),
+                                                  fit: BoxFit.cover,
+                                                  height: 127.74.h,
+                                                  width: 96.87.w,
+                                                ),
                                               ),
-                                              Container(
-                                                height: 24,
-                                                color: Colors.grey,
-                                                width: 22,
-                                                child: Icon(Icons.add),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            // mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
+                                              Positioned(
+                                                top: -5.h,
+                                                left: -8.w,
+                                                child: Icon(
+                                                  Icons.bookmark,
+                                                  color: Color(0xff514F4F),
+                                                  size: 38.h,
+                                                ),
+                                              ),
                                               Icon(
-                                                Icons.star,
-                                                color: Color(0xffFFBB3B),
-                                              ),
-                                              Text(
-                                                '${cubit.recommendedModel?.results?[index].voteAverage}',
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                                Icons.add,
+                                                color: Colors.white,
+                                                size: 20.h,
                                               )
                                             ],
                                           ),
                                           Container(
-                                            width: 96.87,
-                                            child: Text(
-                                              '${cubit.recommendedModel?.results?[index].title}',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                            padding: EdgeInsets.only(
+                                                top: 5.h,
+                                                bottom: 5.h,
+                                                left: 5.w),
+                                            height: 65.h,
+                                            width: 96.w,
+                                            decoration: ShapeDecoration(
+                                              color: Color(0xFF343534),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  4),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  4))),
+                                              shadows: [
+                                                BoxShadow(
+                                                  color: Color(0x29000000),
+                                                  blurRadius: 3,
+                                                  offset: Offset(0, 3),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
                                             ),
-                                          ),
-                                          Container(
-                                            width: 96.87,
-                                            child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              '${cubit.recommendedModel?.results?[index].releaseDate}',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.star,
+                                                      color: Color(0xffFFBB3B),
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4.w,
+                                                    ),
+                                                    Text(
+                                                      '${cubit.recommendedModel?.results?[index].voteAverage}',
+                                                      style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                                Text(
+                                                  '${cubit.recommendedModel?.results?[index].title}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: Colors.white),
+                                                ),
+                                                Text(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  '${cubit.recommendedModel?.results?[index].releaseDate}',
+                                                  style: TextStyle(
+                                                      fontSize: 8.sp,
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                 separatorBuilder: (context, index) => SizedBox(
-                                      width: 10,
+                                      width: 14.w,
                                     ),
                                 itemCount: cubit.recommendedModel == null
                                     ? 10

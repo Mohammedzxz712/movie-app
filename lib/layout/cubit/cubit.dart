@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/layout/cubit/states.dart';
 import 'package:movie_app/models/DetailsModel.dart';
@@ -15,36 +16,57 @@ import '../../shared/network/remote/dio_helper.dart';
 
 class LayoutCubit extends Cubit<LayoutStates> {
   LayoutCubit() : super(Initial());
+
   static LayoutCubit get(context) => BlocProvider.of(context);
   List<BottomNavigationBarItem> bottomsNavBar = [
     BottomNavigationBarItem(
       activeIcon: Image.asset(
         'assets/images/home_icon_active.png',
-        scale: 3.5,
+        width: 25.45.w,
+        height: 20.25.h,
       ),
       icon: Image.asset(
         'assets/images/home_icon.png',
-        scale: 3.5,
+        width: 25.45.w,
+        height: 20.25.h,
       ),
       label: "HOME",
     ),
     BottomNavigationBarItem(
         activeIcon: Image.asset(
           'assets/images/search_active.png',
-          scale: 3.5,
+          width: 19.55.w,
+          height: 20.25.h,
         ),
         icon: Image.asset(
           'assets/images/search.png',
-          scale: 3.5,
+          width: 19.55.w,
+          height: 20.25.h,
         ),
         label: "SEARCH"),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset('assets/images/icon_movie_active.svg'),
-        icon: SvgPicture.asset('assets/images/icon_movie.svg'),
+        activeIcon: SvgPicture.asset(
+          'assets/images/icon_movie_active.svg',
+          width: 26.13.w,
+          height: 21.25.h,
+        ),
+        icon: SvgPicture.asset(
+          'assets/images/icon_movie.svg',
+          width: 26.13.w,
+          height: 21.25.h,
+        ),
         label: "BROWSE"),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset('assets/images/Icon_bookmarks_active.svg'),
-        icon: SvgPicture.asset('assets/images/Icon_bookmarks.svg'),
+        activeIcon: SvgPicture.asset(
+          'assets/images/Icon_bookmarks_active.svg',
+          width: 22.16.w,
+          height: 22.16.h,
+        ),
+        icon: SvgPicture.asset(
+          'assets/images/Icon_bookmarks.svg',
+          width: 22.16.w,
+          height: 22.16.h,
+        ),
         label: "WATCHLIST"),
   ];
   int currentIndex = 0;
@@ -62,6 +84,7 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   HomeModel? homeModel;
+
   void getHomeData() {
     emit(GetLoadHomeData());
     DioHelper.getData(
@@ -78,6 +101,7 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   ReleaseModel? releaseModel;
+
   void getReleaseData() {
     emit(GetLoadReleaseData());
     DioHelper.getData(
@@ -93,6 +117,7 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   RecommendedModel? recommendedModel;
+
   void getRecommendData() {
     emit(GetLoadRecommendData());
     DioHelper.getData(
@@ -108,6 +133,7 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   DetailsModel? detailsModel;
+
   void getDetailsData(num? id) {
     emit(GetLoadDetailsData());
     DioHelper.getData(
