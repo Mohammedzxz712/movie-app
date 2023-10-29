@@ -3,6 +3,7 @@ import 'package:movie_app/models/SimilarModel.dart';
 import 'package:movie_app/modules/details/cubit/states.dart';
 
 import '../../../models/DetailsModel.dart';
+import '../../../shared/components/constant.dart';
 import '../../../shared/network/remote/dio_helper.dart';
 
 class DetailsCubit extends Cubit<DetailsStates> {
@@ -12,10 +13,10 @@ class DetailsCubit extends Cubit<DetailsStates> {
   DetailsModel? detailsModel;
   void getDetailsData(num? id) {
     emit(GetLoadDetailsData());
-    DioHelper.getData(
-            url: "movie/$id",
-            query: {'page': 1, 'api_key': '261a2d97cdf43345c8e7e990bceda0eb'})
-        .then((value) {
+    DioHelper.getData(url: "movie/$id", query: {
+      'page': 1,
+      'api_key': APIKEY,
+    }).then((value) {
       detailsModel = DetailsModel.fromJson(value!.data);
       emit(GetDetailsDataSuccess());
     }).catchError((error) {

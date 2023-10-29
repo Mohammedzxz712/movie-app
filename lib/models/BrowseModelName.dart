@@ -24,6 +24,6 @@ class Genres {
     id = json['id'];
     name = json['name'];
   }
-  int? id;
+  num? id;
   String? name;
 }

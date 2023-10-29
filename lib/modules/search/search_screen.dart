@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/generated/assets.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -69,77 +70,82 @@ class SearchScreen extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
+                    if (cubit.searchModel == null)
+                      Center(
+                        child: Image.asset(Assets.imagesGroup22),
+                      ),
                     if (cubit.searchModel != null)
                       Expanded(
                         child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) => Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://image.tmdb.org/t/p/w500${cubit.searchModel?.results?[index].backdropPath}",
-                                    fit: BoxFit.cover,
-                                    width: 140.w,
-                                    height: 89.h,
-                                    placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator(
-                                      color: Colors.yellow,
-                                    )),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(12.h),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${cubit.searchModel?.results?[index].title}",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          "${cubit.searchModel?.results?[index].releaseDate?.substring(0, 4)}",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 13.sp,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4.h,
-                                        ),
-                                        Text(
-                                          "${cubit.searchModel?.results?[index].originalTitle}",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            "https://image.tmdb.org/t/p/w500${cubit.searchModel?.results?[index].backdropPath}",
+                                        fit: BoxFit.cover,
+                                        width: 140.w,
+                                        height: 89.h,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator(
+                                          color: Colors.yellow,
+                                        )),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(12.h),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "${cubit.searchModel?.results?[index].title}",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 15.sp,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Text(
+                                              "${cubit.searchModel?.results?[index].releaseDate?.substring(0, 4)}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 13.sp,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 4.h,
+                                            ),
+                                            Text(
+                                              "${cubit.searchModel?.results?[index].originalTitle}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            separatorBuilder: (context, index) => Divider( color:Color(0xFF707070)),
+                            separatorBuilder: (context, index) =>
+                                Divider(color: Color(0xFF707070)),
                             itemCount: 10),
                       ),
                   ],
