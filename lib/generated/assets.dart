@@ -3,6 +3,7 @@ class Assets {
   Assets._();
 
   static const String imagesFilm1 = 'assets/images/film_1.png';
+  static const String imagesGroup22 = 'assets/images/Group 22.png';
   static const String imagesHomeIcon = 'assets/images/home_icon.png';
   static const String imagesHomeIconActive =
       'assets/images/home_icon_active.png';

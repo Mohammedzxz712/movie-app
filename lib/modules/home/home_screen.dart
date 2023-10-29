@@ -5,12 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/layout/cubit/cubit.dart';
 import 'package:movie_app/layout/cubit/states.dart';
 import 'package:movie_app/models/navigate_model.dart';
-
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../models/HomeModel.dart';
 import '../details/details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  var boardController = PageController();
 
+  bool isLast = false;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit, LayoutStates>(
@@ -23,90 +25,44 @@ class HomeScreen extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  Container(
-                    height: 313.h,
-                    child: Stack(
-                      children: [
-                        Image(
-                          image: NetworkImage(
-                              "https://image.tmdb.org/t/p/w500${cubit.homeModel?.results[0].backdropPath}"),
-                          fit: BoxFit.cover,
-                          height: 217,
-                          width: double.infinity,
-                        ),
-                        Positioned(
-                          top: 90.h,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 21.w, right: 26.w),
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(4),
-                                      child: Image(
-                                        image: NetworkImage(
-                                            "https://image.tmdb.org/t/p/w500${cubit.homeModel?.results[0].posterPath}"),
-                                        //fit: BoxFit.cover,
-                                        height: 199.h,
-                                        width: 129.w,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: -5.h,
-                                      left: -8.w,
-                                      child: Icon(
-                                        Icons.bookmark,
-                                        color: Color(0xff514F4F),
-                                        size: 38.h,
-
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 20.h,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Image(
-                                    image: AssetImage(
-                                        "assets/images/iconPlay.png"),
-                                    //fit: BoxFit.cover,
-                                    height: 60.h,
-                                    width: 60.w,
-                                  ),
-                                  SizedBox(
-                                    height: 92.h,
-                                  ),
-                                  Text(
-                                    "${cubit.homeModel?.results[0].title}",
-                                    style: TextStyle(
-                                        fontSize: 14.sp, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text(
-                                    "${cubit.homeModel?.results[0].releaseDate}",
-                                    style: TextStyle(
-                                        fontSize: 10.sp, color: Colors.grey),
-                                  ),
-                                ],
-                              )
-                            ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 313.h,
+                            child: PageView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) =>
+                                  pageItem(cubit.homeModel?.results[index]),
+                              itemCount: 3,
+                              controller: boardController,
+                              onPageChanged: (int index) {},
+                            ),
                           ),
-                        )
-                      ],
+                          SmoothPageIndicator(
+                            controller: boardController,
+                            count: 3,
+                            effect: const ExpandingDotsEffect(
+                              activeDotColor: Colors.orange,
+                              dotColor: Colors.grey,
+                              dotHeight: 11,
+                              dotWidth: 11,
+                              expansionFactor: 3,
+                              spacing: 5,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-
                   Container(
                     height: 187.h,
                     width: double.infinity,
@@ -128,55 +84,57 @@ class HomeScreen extends StatelessWidget {
                             height: 13.h,
                           ),
                           Expanded(
-                            child: ListView.separated(
+                            child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, DetailsScreen.routeName,
-                                            arguments: NavigateModel(cubit
-                                                .releaseModel
-                                                ?.results?[index]
-                                                ?.id));
-                                        cubit.getDetailsData(cubit
-                                            .releaseModel?.results?[index]?.id);
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            child: Image(
-                                              image: NetworkImage(
-                                                  "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}"),
-                                              fit: BoxFit.cover,
-                                              height: 127.74.h,
-                                              width: 96.87.w,
+                                itemBuilder: (context, index) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, DetailsScreen.routeName,
+                                              arguments: NavigateModel(cubit
+                                                  .releaseModel
+                                                  ?.results?[index]
+                                                  ?.id));
+                                          cubit.getDetailsData(cubit
+                                              .releaseModel
+                                              ?.results?[index]
+                                              ?.id);
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: Image(
+                                                image: NetworkImage(
+                                                    "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}"),
+                                                fit: BoxFit.cover,
+                                                height: 127.74.h,
+                                                width: 96.87.w,
+                                              ),
                                             ),
-                                          ),
-                                          Positioned(
-                                            top: -5.h,
-                                            left: -8.w,
-
-                                            child: Icon(
-                                              Icons.bookmark,
-                                              color: Color(0xff514F4F),
-                                              size: 38.h,
+                                            Positioned(
+                                              top: -5.h,
+                                              left: -8.w,
+                                              child: Icon(
+                                                Icons.bookmark,
+                                                color: Color(0xff514F4F),
+                                                size: 38.h,
+                                              ),
                                             ),
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            size: 20.h,
-                                          )
-                                        ],
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                              size: 20.h,
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                separatorBuilder: (context, index) => SizedBox(
-                                      width: 14.w,
-                                    ),
-                                itemCount: 10),
+                                itemCount: cubit.releaseModel?.results?.length),
                           )
                         ],
                       ),
@@ -197,8 +155,8 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'Recomended',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.sp,
+                              color: Colors.white,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -207,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: ListView.separated(
-                              padding: EdgeInsets.zero,
+                                padding: EdgeInsets.zero,
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) => InkWell(
@@ -293,7 +251,7 @@ class HomeScreen extends StatelessWidget {
                                                 Row(
                                                   // mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
-                                                    Icon(
+                                                    const Icon(
                                                       Icons.star,
                                                       color: Color(0xffFFBB3B),
                                                       size: 15,
@@ -302,7 +260,7 @@ class HomeScreen extends StatelessWidget {
                                                       width: 4.w,
                                                     ),
                                                     Text(
-                                                      '${cubit.recommendedModel?.results?[index].voteAverage}',
+                                                      '${cubit.recommendedModel?.results?[index].voteAverage?.toStringAsFixed(1)}',
                                                       style: TextStyle(
                                                           fontSize: 10.sp,
                                                           color: Colors.white),
@@ -348,7 +306,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          fallback: (context) => Center(
+          fallback: (context) => const Center(
             child: CircularProgressIndicator(
               color: Colors.yellow,
             ),
@@ -358,4 +316,83 @@ class HomeScreen extends StatelessWidget {
       },
     );
   }
+
+  Widget pageItem(Results? results) => Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image(
+              image: NetworkImage(
+                  "https://image.tmdb.org/t/p/w500${results?.backdropPath}"),
+              fit: BoxFit.cover,
+              height: 217,
+              width: double.infinity,
+            ),
+          ),
+          Positioned(
+            top: 90.h,
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 21.w, right: 26.w),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image(
+                          image: NetworkImage(
+                              "https://image.tmdb.org/t/p/w500${results?.posterPath}"),
+                          //fit: BoxFit.cover,
+                          height: 199.h,
+                          width: 129.w,
+                        ),
+                      ),
+                      Positioned(
+                        top: -5.h,
+                        left: -8.w,
+                        child: Icon(
+                          Icons.bookmark,
+                          color: Color(0xff514F4F),
+                          size: 38.h,
+                        ),
+                      ),
+                      Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 20.h,
+                      )
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image(
+                      image: AssetImage("assets/images/iconPlay.png"),
+                      //fit: BoxFit.cover,
+                      height: 60.h,
+                      width: 60.w,
+                    ),
+                    SizedBox(
+                      height: 92.h,
+                    ),
+                    Text(
+                      "${results?.title}",
+                      style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      "${results?.releaseDate}",
+                      style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      );
 }

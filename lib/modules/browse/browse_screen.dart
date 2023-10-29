@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/models/BrowseNavigate.dart';
 import 'package:movie_app/modules/browse/cubit/cubit.dart';
 import 'package:movie_app/modules/browse/cubit/states.dart';
 
@@ -43,6 +44,7 @@ class BrowseScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: GridView.builder(
+                        physics: BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: size.width * 0.08,
@@ -51,12 +53,16 @@ class BrowseScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GridTile(
                               child: InkWell(
-                                onTap: (){
-                                  Navigator.pushNamed(
-                                      context, BrowseDetails.routeName);
-                                },
-                                child: Stack(children: [
-                            Opacity(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, BrowseDetails.routeName,
+                                  arguments: BrowseNavigateDetails(
+                                      cubit.browseModelName?.genres?[index].id,
+                                      cubit.browseModelName?.genres?[index]
+                                          .name));
+                            },
+                            child: Stack(children: [
+                              Opacity(
                                 opacity: 0.37,
                                 child: Container(
                                   decoration: ShapeDecoration(
@@ -82,8 +88,8 @@ class BrowseScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                            ),
-                            Center(
+                              ),
+                              Center(
                                 child: Text(
                                     '${cubit.browseModelName?.genres?[index].name}',
                                     style: TextStyle(
@@ -91,9 +97,9 @@ class BrowseScreen extends StatelessWidget {
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w600,
                                     )),
-                            )
-                          ]),
-                              ));
+                              )
+                            ]),
+                          ));
                         },
                         itemCount: cubit.browseModelName?.genres?.length,
                       ),
