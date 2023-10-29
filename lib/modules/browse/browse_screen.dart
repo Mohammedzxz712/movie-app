@@ -1,11 +1,16 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/models/BrowseNavigate.dart';
 import 'package:movie_app/modules/browse/cubit/cubit.dart';
 import 'package:movie_app/modules/browse/cubit/states.dart';
 
+import '../browse_details/browse_details.dart';
+
 class BrowseScreen extends StatelessWidget {
   List<String> photo = [];
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -32,13 +37,14 @@ class BrowseScreen extends StatelessWidget {
                       'Browse Category ',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: 22.sp,
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
                     ),
                     Expanded(
                       child: GridView.builder(
+                        physics: BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: size.width * 0.08,
@@ -46,25 +52,33 @@ class BrowseScreen extends StatelessWidget {
                             childAspectRatio: 1.5),
                         itemBuilder: (context, index) {
                           return GridTile(
-                              child: Opacity(
-                            opacity: 0.37,
-                            child: Container(
-                              decoration: ShapeDecoration(
-                                color: Color(0xFF343534),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4)),
-                                shadows: [
-                                  BoxShadow(
-                                    color: Color(0x29000000),
-                                    blurRadius: 3,
-                                    offset: Offset(0, 3),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
+                              child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, BrowseDetails.routeName,
+                                  arguments: BrowseNavigateDetails(
+                                      cubit.browseModelName?.genres?[index].id,
+                                      cubit.browseModelName?.genres?[index]
+                                          .name));
+                            },
+                            child: Stack(children: [
+                              Opacity(
+                                opacity: 0.37,
+                                child: Container(
+                                  decoration: ShapeDecoration(
+                                    color: Color(0xFF343534),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4)),
+                                    shadows: [
+                                      BoxShadow(
+                                        color: Color(0x29000000),
+                                        blurRadius: 3,
+                                        offset: Offset(0, 3),
+                                        spreadRadius: 0,
+                                      )
+                                    ],
+                                  ),
+                                  child: ClipRRect(
                                     borderRadius: BorderRadius.circular(4),
                                     child: Image(
                                       image: NetworkImage(
@@ -73,19 +87,18 @@ class BrowseScreen extends StatelessWidget {
                                       width: double.infinity,
                                     ),
                                   ),
-                                  Center(
-                                    child: Text(
-                                        '${cubit.browseModelName?.genres?[index].name}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w700,
-                                        )),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
+                              Center(
+                                child: Text(
+                                    '${cubit.browseModelName?.genres?[index].name}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              )
+                            ]),
                           ));
                         },
                         itemCount: cubit.browseModelName?.genres?.length,

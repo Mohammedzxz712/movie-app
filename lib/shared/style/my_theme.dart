@@ -3,7 +3,7 @@ import 'colors.dart';
 
 class MyTheme {
   static ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: Color(0xFF121312),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.black,

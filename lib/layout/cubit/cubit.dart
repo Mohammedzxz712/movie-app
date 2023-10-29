@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/layout/cubit/states.dart';
 import 'package:movie_app/models/DetailsModel.dart';
@@ -11,40 +12,62 @@ import '../../modules/browse/browse_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/search/search_screen.dart';
 import '../../modules/watch_list/watch_screen.dart';
+import '../../shared/components/constant.dart';
 import '../../shared/network/remote/dio_helper.dart';
 
 class LayoutCubit extends Cubit<LayoutStates> {
   LayoutCubit() : super(Initial());
+
   static LayoutCubit get(context) => BlocProvider.of(context);
   List<BottomNavigationBarItem> bottomsNavBar = [
     BottomNavigationBarItem(
       activeIcon: Image.asset(
         'assets/images/home_icon_active.png',
-        scale: 3.5,
+        width: 25.45.w,
+        height: 20.25.h,
       ),
       icon: Image.asset(
         'assets/images/home_icon.png',
-        scale: 3.5,
+        width: 25.45.w,
+        height: 20.25.h,
       ),
       label: "HOME",
     ),
     BottomNavigationBarItem(
         activeIcon: Image.asset(
           'assets/images/search_active.png',
-          scale: 3.5,
+          width: 19.55.w,
+          height: 20.25.h,
         ),
         icon: Image.asset(
           'assets/images/search.png',
-          scale: 3.5,
+          width: 19.55.w,
+          height: 20.25.h,
         ),
         label: "SEARCH"),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset('assets/images/icon_movie_active.svg'),
-        icon: SvgPicture.asset('assets/images/icon_movie.svg'),
+        activeIcon: SvgPicture.asset(
+          'assets/images/icon_movie_active.svg',
+          width: 26.13.w,
+          height: 21.25.h,
+        ),
+        icon: SvgPicture.asset(
+          'assets/images/icon_movie.svg',
+          width: 26.13.w,
+          height: 21.25.h,
+        ),
         label: "BROWSE"),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset('assets/images/Icon_bookmarks_active.svg'),
-        icon: SvgPicture.asset('assets/images/Icon_bookmarks.svg'),
+        activeIcon: SvgPicture.asset(
+          'assets/images/Icon_bookmarks_active.svg',
+          width: 22.16.w,
+          height: 22.16.h,
+        ),
+        icon: SvgPicture.asset(
+          'assets/images/Icon_bookmarks.svg',
+          width: 22.16.w,
+          height: 22.16.h,
+        ),
         label: "WATCHLIST"),
   ];
   int currentIndex = 0;
@@ -62,14 +85,15 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   HomeModel? homeModel;
+
   void getHomeData() {
     emit(GetLoadHomeData());
-    DioHelper.getData(
-            url: POPULAR,
-            query: {'page': 1, 'api_key': '261a2d97cdf43345c8e7e990bceda0eb'})
-        .then((value) {
+    DioHelper.getData(url: POPULAR, query: {
+      'page': 1,
+      'api_key': APIKEY,
+    }).then((value) {
       homeModel = HomeModel.fromJson(value!.data);
-      print(homeModel?.results);
+
       emit(GetHomeDataSuccess());
     }).catchError((error) {
       print(error.toString());
@@ -78,12 +102,13 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   ReleaseModel? releaseModel;
+
   void getReleaseData() {
     emit(GetLoadReleaseData());
-    DioHelper.getData(
-            url: UPCOMING,
-            query: {'page': 1, 'api_key': '261a2d97cdf43345c8e7e990bceda0eb'})
-        .then((value) {
+    DioHelper.getData(url: UPCOMING, query: {
+      'page': 1,
+      'api_key': APIKEY,
+    }).then((value) {
       releaseModel = ReleaseModel.fromJson(value!.data);
       emit(GetReleaseDataSuccess());
     }).catchError((error) {
@@ -93,12 +118,13 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   RecommendedModel? recommendedModel;
+
   void getRecommendData() {
     emit(GetLoadRecommendData());
-    DioHelper.getData(
-            url: TOPRATED,
-            query: {'page': 1, 'api_key': '261a2d97cdf43345c8e7e990bceda0eb'})
-        .then((value) {
+    DioHelper.getData(url: TOPRATED, query: {
+      'page': 1,
+      'api_key': APIKEY,
+    }).then((value) {
       recommendedModel = RecommendedModel.fromJson(value!.data);
       emit(GetRecommendDataSuccess());
     }).catchError((error) {
@@ -108,13 +134,13 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   DetailsModel? detailsModel;
+
   void getDetailsData(num? id) {
     emit(GetLoadDetailsData());
-    DioHelper.getData(
-            url: "movie/$id",
-            query: {'page': 1, 'api_key': '261a2d97cdf43345c8e7e990bceda0eb'})
-        .then((value) {
-      print(value.toString());
+    DioHelper.getData(url: "movie/$id", query: {
+      'page': 1,
+      'api_key': APIKEY,
+    }).then((value) {
       detailsModel = DetailsModel.fromJson(value!.data);
       emit(GetDetailsDataSuccess());
     }).catchError((error) {
