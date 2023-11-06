@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +9,13 @@ import 'package:movie_app/models/navigate_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../models/HomeModel.dart';
 import '../details/details_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatelessWidget {
   var boardController = PageController();
 
   bool isLast = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit, LayoutStates>(
@@ -85,56 +88,65 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, DetailsScreen.routeName,
-                                              arguments: NavigateModel(cubit
-                                                  .releaseModel
-                                                  ?.results?[index]
-                                                  ?.id));
-                                          cubit.getDetailsData(cubit
-                                              .releaseModel
-                                              ?.results?[index]
-                                              ?.id);
-                                        },
-                                        child: Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              child: Image(
-                                                image: NetworkImage(
-                                                    "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}"),
-                                                fit: BoxFit.cover,
-                                                height: 127.74.h,
-                                                width: 96.87.w,
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: -5.h,
-                                              left: -8.w,
-                                              child: Icon(
-                                                Icons.bookmark,
-                                                color: Color(0xff514F4F),
-                                                size: 38.h,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                              size: 20.h,
-                                            )
-                                          ],
+                              padding: EdgeInsets.zero,
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Padding(
+                                padding: EdgeInsets.only(right: 8.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      DetailsScreen.routeName,
+                                      arguments: NavigateModel(cubit
+                                          .releaseModel?.results?[index]?.id),
+                                    );
+                                    cubit.getDetailsData(cubit
+                                        .releaseModel?.results?[index]?.id);
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: Image(
+                                          image: NetworkImage(
+                                            "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index].backdropPath}",
+                                          ),
+                                          fit: BoxFit.cover,
+                                          height: 127.74.h,
+                                          width: 96.87.w,
                                         ),
                                       ),
-                                    ),
-                                itemCount: cubit.releaseModel?.results?.length),
+                                      InkWell(
+                                        onTap: () {
+                                          addToWatchlist(
+                                            cubit.releaseModel?.results?[index]
+                                                    ?.title ??
+                                                '',
+                                            cubit.releaseModel?.results?[index]
+                                                    ?.overview ??
+                                                '',
+                                            "https://image.tmdb.org/t/p/w500${cubit.releaseModel?.results?[index]?.backdropPath}",
+                                            cubit.releaseModel?.results?[index]
+                                                    ?.releaseDate ??
+                                                '',
+                                          );
+                                          AlertDialog(actions: [
+                                            Text('Item added to watchlist '),
+                                          ]);
+                                        },
+                                        child: Icon(
+                                          Icons.bookmark_add_rounded,
+                                          color: Color(0xff514F4F),
+                                          size: 38.r,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              itemCount: cubit.releaseModel?.results?.length,
+                            ),
                           )
                         ],
                       ),
@@ -144,7 +156,7 @@ class HomeScreen extends StatelessWidget {
                     height: 30.h,
                   ),
                   Container(
-                    height: 255.h,
+                    height: 285.h,
                     width: double.infinity,
                     color: Color(0xff282A28),
                     child: Padding(
@@ -161,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 14.h,
+                            height: 10.h,
                           ),
                           Expanded(
                             child: ListView.separated(
@@ -200,11 +212,11 @@ class HomeScreen extends StatelessWidget {
                                               ),
                                               Positioned(
                                                 top: -5.h,
-                                                left: -8.w,
+                                                left: -7.5.w,
                                                 child: Icon(
                                                   Icons.bookmark,
                                                   color: Color(0xff514F4F),
-                                                  size: 38.h,
+                                                  size: 38.r,
                                                 ),
                                               ),
                                               Icon(
@@ -219,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                                                 top: 5.h,
                                                 bottom: 5.h,
                                                 left: 5.w),
-                                            height: 65.h,
+                                            height: 90.h,
                                             width: 96.w,
                                             decoration: ShapeDecoration(
                                               color: Color(0xFF343534),
@@ -245,8 +257,7 @@ class HomeScreen extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Row(
                                                   // mainAxisAlignment: MainAxisAlignment.start,
@@ -395,4 +406,37 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       );
+
+  void addToWatchlist(
+      String title, String description, String imageUrl, String date) {
+    FirebaseFirestore.instance
+        .collection('watchlist')
+        .where('title', isEqualTo: title)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isEmpty) {
+        FirebaseFirestore.instance.collection('watchlist').add({
+          'title': title,
+          'description': description,
+          'imageUrl': imageUrl,
+          'date': date,
+        }).then((value) {
+          Fluttertoast.showToast(
+            msg: "Item added to watchlist",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey[800],
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          print('Item added to watchlist');
+        }).catchError((error) {
+          print('Error adding item to watchlist: $error');
+        });
+      } else {
+        print('Movie with the same title already exists in the watchlist');
+      }
+    });
+  }
 }
