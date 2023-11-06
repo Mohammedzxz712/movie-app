@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WatchScreen extends StatelessWidget {
   const WatchScreen({super.key});
@@ -22,87 +24,133 @@ class WatchScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => Padding(
-                    padding:  EdgeInsets.all(8.h),
-                    child: Row(
-                      children: [
-                        Stack(children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: Image(
-                              image: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNf8BJrOYOERBM0mYzBsj7rVR9fRXZwhNC8Q&usqp=CAU}'),
-                              fit: BoxFit.cover,
-                              width: 140.w,
-                              height: 89.h,
-                            ),
-                          ),
-                          Positioned(
-                            top: -5.h,
-                            left: -8.w,
-                            child: Icon(
-                              Icons.bookmark,
-                              color: Color(0xffeeb54a),
-                              size: 38.h,
-                            ),
-                          ),
-                          Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: 18.h,
-                          )
-                        ]),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(12.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('watchlist')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: Text(
+                      'Error: ${snapshot.error}',
+                      style: TextStyle(color: Colors.white),
+                    ));
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(
+                        child: Text(
+                      'Your watchlist is empty.',
+                      style: TextStyle(color: Colors.white),
+                    ));
+                  }
+
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final item = snapshot.data!.docs[index];
+                      final title = item['title'] as String? ?? '';
+                      final description = item['description'] as String? ?? '';
+                      final date = item['date'] as String? ?? '';
+                      String imageUrl = item['imageUrl'] as String? ??
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNf8BJrOYOERBM0mYzBsj7rVR9fRXZwhNC8Q&usqp=CAU';
+
+                      return Padding(
+                        padding: EdgeInsets.all(8.h),
+                        child: Row(
+                          children: [
+                            Stack(
                               children: [
-                                Text(
-                                  'lita Battle Angel',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 15.sp,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Text(
-                                  '2019',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 13.sp,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    fit: BoxFit.cover,
+                                    width: 140.w,
+                                    height: 89.h,
+                                    placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.yellow,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5.h,
+                                Positioned(
+                                  top: -4.5.h,
+                                  left: -7.5.w,
+                                  child: Icon(
+                                    Icons.bookmark,
+                                    color: Color(0xffeeb54a),
+                                    size: 38.h,
+                                  ),
                                 ),
-                                // if (model.oldPrice != 0 &&
-                                //     isDiscount == true)
-                                Text(
-                                  'Rosa Salazar, Christoph Waltz',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 13.sp),
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 18.h,
                                 ),
                               ],
                             ),
-                          ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(12.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 15.sp,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      date.substring(0, 4),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13.sp,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      description,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13.sp,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      );
+                    },
+                    separatorBuilder: (context, index) => Divider(
+                      color: Color(0xFF707070),
                     ),
-                  ),
-                  separatorBuilder: (context, index) => Divider(
-                          color: Color(
-                        0xFF707070,
-                      )),
-                  itemCount: 10),
+                    itemCount: snapshot.data!.docs.length,
+                  );
+                },
+              ),
             ),
           ],
         ),
