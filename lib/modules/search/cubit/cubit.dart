@@ -14,6 +14,7 @@ class SearchCubit extends Cubit<SearchStates> {
   SearchModel? searchModel;
 
   void searchData(String text) {
+    searchModel?.results = null;
     emit(SearchLoadingStates());
     DioHelper.getData(url: SEARCH, query: {
       'page': 1,

@@ -15,7 +15,7 @@ class BrowseDetailsCubit extends Cubit<BrowseDetailsStates> {
     emit(GetLoadBrowseDetailsData());
     DioHelper.getData(url: "discover/movie", query: {
       'page': 1,
-      'without_genres': id,
+      'with_genres': id,
       'api_key': APIKEY,
     }).then((value) {
       print(value.toString());
