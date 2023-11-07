@@ -9,22 +9,22 @@ class SimilarModel {
   SimilarModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = <Results>[];
+      results = <ResultsSimilar>[];
       json['results'].forEach((v) {
-        results?.add(Results.fromJson(v));
+        results?.add(ResultsSimilar.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
   num? page;
-  List<Results>? results;
+  List<ResultsSimilar>? results;
   num? totalPages;
   num? totalResults;
 }
 
-class Results {
-  Results({
+class ResultsSimilar {
+  ResultsSimilar({
     this.adult,
     this.backdropPath,
     this.genreIds,
@@ -41,7 +41,7 @@ class Results {
     this.voteCount,
   });
 
-  Results.fromJson(Map<String, dynamic> json) {
+  ResultsSimilar.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = List<num>.from(json['genre_ids']);

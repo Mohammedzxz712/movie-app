@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_app/layout/cubit/states.dart';
 import 'package:movie_app/models/DetailsModel.dart';
 import 'package:movie_app/models/HomeModel.dart';
@@ -146,6 +148,39 @@ class LayoutCubit extends Cubit<LayoutStates> {
     }).catchError((error) {
       print(error.toString());
       emit(GetLoadDetailsData());
+    });
+  }
+
+  void addToWatchlist(
+      String title, String description, String imageUrl, String date) {
+    FirebaseFirestore.instance
+        .collection('watchlist')
+        .where('title', isEqualTo: title)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isEmpty) {
+        FirebaseFirestore.instance.collection('watchlist').add({
+          'title': title,
+          'description': description,
+          'imageUrl': imageUrl,
+          'date': date,
+        }).then((value) {
+          Fluttertoast.showToast(
+            msg: "Item added to watchlist",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey[800],
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          print('Item added to watchlist');
+        }).catchError((error) {
+          print('Error adding item to watchlist: $error');
+        });
+      } else {
+        print('Movie with the same title already exists in the watchlist');
+      }
     });
   }
 }
