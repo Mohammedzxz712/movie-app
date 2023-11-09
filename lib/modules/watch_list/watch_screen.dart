@@ -62,15 +62,16 @@ class WatchScreen extends StatelessWidget {
                       final date = item['date'] as String? ?? '';
                       String imageUrl = item['imageUrl'] as String? ??
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNf8BJrOYOERBM0mYzBsj7rVR9fRXZwhNC8Q&usqp=CAU';
-
+                      final isFavourite = item['isFavourite'] as bool? ?? true;
+                      final id = item['id'] as num? ?? 1;
                       return InkWell(
                         onTap: () {
                           Navigator.pushNamed(
                             context,
                             DetailsScreen.routeName,
-                            arguments: NavigateModel(1),
+                            arguments: NavigateModel(id),
                           );
-                          DetailsCubit.get(context).getDetailsData(1);
+                          DetailsCubit.get(context).getDetailsData(id);
                         },
                         child: Padding(
                           padding: EdgeInsets.all(8.h),

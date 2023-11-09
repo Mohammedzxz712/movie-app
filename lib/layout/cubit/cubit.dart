@@ -19,6 +19,32 @@ import '../../shared/network/remote/dio_helper.dart';
 
 class LayoutCubit extends Cubit<LayoutStates> {
   LayoutCubit() : super(Initial());
+  void removeFromWatchlist(int id) {
+    FirebaseFirestore.instance
+        .collection('watchlist')
+        .where('id', isEqualTo: id)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.first.reference.delete().then((value) {
+          Fluttertoast.showToast(
+            msg: "Item removed from watchlist",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey[800],
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          print('Item removed from watchlist');
+        }).catchError((error) {
+          print('Error removing item from watchlist: $error');
+        });
+      } else {
+        print('Movie with id $id not found in the watchlist');
+      }
+    });
+  }
 
   static LayoutCubit get(context) => BlocProvider.of(context);
   List<BottomNavigationBarItem> bottomsNavBar = [
@@ -152,7 +178,7 @@ class LayoutCubit extends Cubit<LayoutStates> {
   }
 
   void addToWatchlist(
-      String title, String description, String imageUrl, String date) {
+      String title, String description, String imageUrl, String date,bool isFavourite,num id) {
     FirebaseFirestore.instance
         .collection('watchlist')
         .where('title', isEqualTo: title)
@@ -164,6 +190,8 @@ class LayoutCubit extends Cubit<LayoutStates> {
           'description': description,
           'imageUrl': imageUrl,
           'date': date,
+          'isFavourite':isFavourite,
+          'id':id
         }).then((value) {
           Fluttertoast.showToast(
             msg: "Item added to watchlist",

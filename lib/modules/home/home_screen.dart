@@ -78,18 +78,18 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  releaseItem(cubit.releaseModel?.results, context),
+                  ReleaseItem(cubit.releaseModel?.results),
                   SizedBox(
                     height: 30.h,
                   ),
-                  recommendedItem(cubit.recommendedModel?.results, context),
+                  RecommendedItem(cubit.recommendedModel?.results),
                 ],
               ),
             ),
           ),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(
-              color: Colors.yellow,
+              color: Color(0xffFFBB3B),
             ),
           ),
           condition: cubit.homeModel != null,
