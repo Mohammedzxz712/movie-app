@@ -52,8 +52,8 @@ class HomeScreen extends StatelessWidget {
                                     cubit.getDetailsData(
                                         cubit.homeModel?.results[index].id);
                                   },
-                                  child: pageItem(
-                                      cubit.homeModel?.results[index])),
+                                  child: PageItem(
+                                      results: cubit.homeModel?.results[index], index: index,)),
                               itemCount: 3,
                               controller: boardController,
                               onPageChanged: (int index) {},
@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                             controller: boardController,
                             count: 3,
                             effect: const ExpandingDotsEffect(
-                              activeDotColor: Colors.orange,
+                              activeDotColor: Color(0xffFFBB3B),
                               dotColor: Colors.grey,
                               dotHeight: 11,
                               dotWidth: 11,

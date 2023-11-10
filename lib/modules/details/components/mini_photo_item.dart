@@ -39,20 +39,20 @@ Widget miniPhotoAndDescriptionItemInDetails(
                     width: 129.w,
                   ),
                 ),
-                Positioned(
-                  top: -5.h,
-                  left: -8.w,
-                  child: Icon(
-                    Icons.bookmark,
-                    color: Color(0xff514F4F),
-                    size: 38.h,
-                  ),
-                ),
-                Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 20.h,
-                )
+                // Positioned(
+                //   top: -5.h,
+                //   left: -8.w,
+                //   child: Icon(
+                //     Icons.bookmark,
+                //     color: Color(0xff514F4F),
+                //     size: 38.h,
+                //   ),
+                // ),
+                // Icon(
+                //   Icons.add,
+                //   color: Colors.white,
+                //   size: 20.h,
+                // )
               ],
             ),
             Expanded(

@@ -72,9 +72,11 @@ class DetailsScreen extends StatelessWidget {
                     ),
                     Column(
                       children: [
+
                         miniPhotoAndDescriptionItemInDetails(
                             cubit.detailsModel, context),
-                        moreLinkThisItem(cubit.similarModel?.results, context),
+                        MoreLikeThisItem(results: cubit.similarModel?.results,)
+
                       ],
                     ),
                   ],

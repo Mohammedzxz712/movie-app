@@ -149,10 +149,10 @@ class _RecommendedItemState extends State<RecommendedItem> {
                           children: [
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   Icons.star,
                                   color: Color(0xffFFBB3B),
-                                  size: 15,
+                                  size: 15.r,
                                 ),
                                 SizedBox(
                                   width: 4.w,
