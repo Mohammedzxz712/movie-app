@@ -44,11 +44,11 @@ Widget searchItem(List<ResultsSearch>? results, context) => Form(
               hintText: 'search',
               hintStyle: TextStyle(color: Colors.grey),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
+                borderRadius: BorderRadius.all(Radius.circular(25.r)),
                 borderSide: BorderSide(color: Colors.white),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
+                borderRadius: BorderRadius.all(Radius.circular(25.r)),
                 borderSide: BorderSide(color: Colors.white),
               ),
             ),
@@ -58,12 +58,10 @@ Widget searchItem(List<ResultsSearch>? results, context) => Form(
           ),
           if (results == null) const LinearProgressIndicator(),
           SizedBox(
-            height: 10.h,
+            height: 271.h,
           ),
           if (results == null)
-            Center(
-              child: Image.asset(Assets.imagesGroup22),
-            ),
+            Center(child: Image.asset(Assets.imagesGroup22,height:114.50 .h,width: 104.w,)),
           if (results != null)
             Expanded(
               child: ListView.separated(
