@@ -72,9 +72,11 @@ class DetailsScreen extends StatelessWidget {
                     ),
                     Column(
                       children: [
+
                         miniPhotoAndDescriptionItemInDetails(
                             cubit.detailsModel, context),
-                        moreLinkThisItem(cubit.similarModel?.results, context),
+                        MoreLikeThisItem(results: cubit.similarModel?.results,)
+
                       ],
                     ),
                   ],
@@ -84,7 +86,7 @@ class DetailsScreen extends StatelessWidget {
             condition: cubit.detailsModel != null && cubit.similarModel != null,
             fallback: (context) => const Center(
               child: CircularProgressIndicator(
-                color: Colors.yellow,
+                color: Color(0xffFFBB3B),
               ),
             ),
           );

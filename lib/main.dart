@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/provider/provider.dart';
 import 'package:movie_app/shared/bloc_observer.dart';
 import 'package:movie_app/shared/network/remote/dio_helper.dart';
 import 'package:movie_app/shared/style/my_theme.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'layout/layout_screen/layout_screen.dart';
@@ -20,7 +22,9 @@ void main() async{
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
 
-  runApp(const MyApp());
+  runApp(MultiProvider(  providers: [
+    ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+  ],child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
