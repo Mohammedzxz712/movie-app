@@ -58,10 +58,10 @@ Widget searchItem(List<ResultsSearch>? results, context) => Form(
           ),
           if (results == null) const LinearProgressIndicator(),
           SizedBox(
-            height: 271.h,
+            height: 10.h,
           ),
           if (results == null)
-            Center(child: Image.asset(Assets.imagesGroup22,height:114.50 .h,width: 104.w,)),
+            Expanded(child: Image.asset(Assets.imagesGroup22,height:114.50 .h,width: 104.w,)),
           if (results != null)
             Expanded(
               child: ListView.separated(
