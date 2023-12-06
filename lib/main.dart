@@ -7,6 +7,7 @@ import 'package:movie_app/shared/bloc_observer.dart';
 import 'package:movie_app/shared/network/remote/dio_helper.dart';
 import 'package:movie_app/shared/style/my_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'layout/layout_screen/layout_screen.dart';
@@ -21,10 +22,12 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   runApp(MultiProvider(  providers: [
-    ChangeNotifierProvider(create: (_) => WatchlistProvider()),
-  ],child: const MyApp()));
+    ChangeNotifierProvider(
+      create: (_) => WatchlistProvider(prefs),
+    ),  ],child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
